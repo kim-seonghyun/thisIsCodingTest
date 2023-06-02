@@ -1,0 +1,29 @@
+from bisect import bisect_left, bisect_right
+
+def count_by_range(a, left, right):
+    left_index = bisect_left(a, left)
+    right_index = bisect_right(a, right)
+    return right_index - left_index
+
+def solution(words, queries):
+    array = [[] for _ in range(10001)]
+
+    reversedArray = [[] for _ in range(10001)]
+
+    for word in words:
+        array[len(word)].append(word)
+        reversedArray[len(word)].append(word[::-1])
+    
+    
+    for i in range(10001):
+        array[i].sort()
+        reversedArray[i].sort()
+    
+    result = []
+    for query in queries:
+        if query[0] != '?':
+            result.append(count_by_range(array[len(query)], query.replace('?','a'), query.replace('?','z'))) 
+        else:
+            result.append(count_by_range(reversedArray[len(query)], query[::-1].replace('?','a'), query[::-1].replace('?','z'))) 
+            
+    return result
